@@ -1,0 +1,41 @@
+---
+ - name: Installing Jenkins
+   hosts: master.example.com
+   become: Yes
+   vars_files:
+     - myvars.yml
+   tasks: 
+     - name: Download jenkins.repo
+       get_url:
+         url: "{{ package3 }}"
+         dest: "{{ package4 }}"
+
+     - name: Import jenkins Key
+       rpm_key:
+         state: present
+         key: "{{ package5 }}"
+
+     - name: Install Java and jenkins
+       dnf: 
+         name: '{{ item }}'
+         state: installed
+       with_items:
+         - "{{ package1 }}"
+         - "{{ package2 }}"
+
+     - name: Add Port Number to firewall
+       firewalld:
+         port: 8080/tcp
+         permanent: Yes
+         state: enabled
+
+     - name: Reloading service firewalld         
+       systemd:
+         name: firewalld
+         state: reloaded
+
+     - name: Start Jenkins service and enable on boot
+       service:
+         name: jenkins
+         state: started
+         enabled: yes

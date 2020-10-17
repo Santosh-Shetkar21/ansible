@@ -1,0 +1,12 @@
+---
+ - name: Run CRON job every day at 08.08 AM UTC
+   hosts: master.example.com
+   become: yes
+   tasks:
+     - name: Crontab task
+       cron:
+         user: "santosh"
+         hour: 08
+         minute: 08
+         job: "/bin/echo Good Morning"
+         state: present

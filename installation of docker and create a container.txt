@@ -1,0 +1,40 @@
+---
+ - name: Docker task
+   hosts: master
+   become: yes
+   tasks:
+     - name: Creating a docker repository
+       yum_repository:
+         description: repo for docker
+         name: docker-ce
+         baseurl: https://download.docker.com/linux/centos/8/x86_64/stable/
+         gpgcheck: no
+
+     - name: Installing docker-ce
+       package:
+         name: docker-ce
+         state: present
+
+     - name: Starting docker
+       service:
+         name: docker
+         state: started
+
+     - name: Installing docker
+       command: "pip3 install docker"
+
+     - name: Pulling docker image
+       docker_image:
+         name: httpd
+         source: pull
+
+     - name: Creating a container
+       docker_container:
+         name: dockertask
+         image: httpd
+         volumes:
+           - /home/santosh/docker_practice:/usr/local/apache2/htdocs/
+         ports:
+           - "9191:80"
+         state: started
+         detach: yes

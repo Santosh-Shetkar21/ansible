@@ -1,0 +1,31 @@
+User Management
+---
+ - name: User Management Practice
+   hosts: master
+   become: yes
+   tasks:
+     - name: Creating Group
+       group:
+         name: cricket
+         state: present
+         gid: 3000
+
+     - name: Creating Users
+       user:
+         name: rohit
+         state: present
+         uid: 4545
+         group: cricket
+         password: "$1$K.POvelE$T/pOe2TADUO.L5iTWsURO."
+         home: /home/santosh/sampledir
+         shell: /bin/false
+
+     - name: Creating Users
+       user:
+         name: Dhoni
+         state: present
+         uid: 4546
+         group: cricket
+         password: "$1$K.POvelE$T/pOe2TADUO.L5iTWsURO."
+         home: /home/santosh/sampledir
+         shell: /bin/login

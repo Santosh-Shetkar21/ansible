@@ -1,0 +1,23 @@
+---
+ - name: Testing  handlers
+   hosts: myserver
+   become: Yes
+   tasks:
+     - name: Creating User
+       user:
+         name: santya1
+         state: present
+       notify: remove_dir
+
+     - name: Debug
+       debug:
+         msg: "Hello everyone this is debug"
+   
+   handlers: 
+     - name: remove_dir
+       file:
+         name: /home/santya1
+         state: absent
+
+--------------------------------------------------------------------
+Handler is used to after some tasks to run specific task

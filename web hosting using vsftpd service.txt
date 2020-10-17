@@ -1,0 +1,37 @@
+---
+ - name: web hosting using ftp service
+   hosts: master
+   become: yes
+   tasks: 
+     - name: Installing ftp
+       yum:
+         name: vsftpd
+         state: latest
+
+     - name: Creating a file in pub directory
+       copy:
+         content: "hello this is vsftpd"
+         dest: /var/ftp/pub/santosh.txt
+
+     - name: Allow anonymous
+       lineinfile:
+         path: /etc/vsftpd/vsftpd.conf
+         regexp: ^anonymous_enable=NO
+         line: ^anonymous_enable=YES
+
+     - name: starting vsftpd
+       service: 
+         name: vsftpd
+         state: restarted
+         enabled: yes
+
+     - name: Adding service in firewall
+       firewalld: 
+         service: ftp
+         permanent: yes
+         state: enabled
+
+     - name: Reloading firewall
+       service:
+         name: firewalld
+         state: restarted

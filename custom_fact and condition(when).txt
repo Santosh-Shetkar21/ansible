@@ -1,0 +1,33 @@
+---
+ - name: Set up of custom facts on machine
+   hosts: master
+   become: yes
+   tasks:
+     - name: Creating custom facts directory
+       file: 
+         name: /etc/ansible/facts.d 
+         state: directory
+
+     - name: Set fact intension
+       copy: 
+         content: "[testing]\nintension=practice\n" 
+         dest: /etc/ansible/facts.d/custom.fact 
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+create another file for checking fact
+
+---
+ - name: Testing 
+   become: yes
+   hosts: master
+   tasks:
+     - name: Lets read custom fact [testing]
+       debug:
+         msg: "{{ ansible_local.custom.testing.intension }}"
+
+     - name: lets check with condition
+       yum:
+         name: httpd
+         state: installed
+       when: ansible_local.custom.testing.intension == "practice"

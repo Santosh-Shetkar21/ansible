@@ -1,0 +1,16 @@
+---
+ - name: Launching Instance
+   hosts: master.example.com
+   tasks:
+     - name: creating a instances on AWS platform
+       ec2:
+         key_name: aws_key_ansible
+         instance_type: t2.micro
+         image: ami-0a54aef4ef3b5f881
+         wait: yes
+         group: default
+         vpc_subnet_id: subnet-428fe20e
+         region: us-east-2
+         assign_public_ip: yes
+         aws_access_key: AKIAJJWW77RSQVT3MBHA 
+         aws_secret_key: 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

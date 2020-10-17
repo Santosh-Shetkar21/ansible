@@ -1,0 +1,32 @@
+---
+ - name: Web hosting using httpd service
+   hosts: master
+   become: yes
+   tasks:
+     - name: Installing httpd
+       yum:
+         name: httpd
+         state: latest
+
+     - name: Creating index.html file
+       copy:
+         content: "Hello world this is ansible"
+         dest: /var/www/html/index.html
+
+     - name: Starting httpd
+       service:
+         name: httpd
+         state: restarted
+         enabled: yes
+
+     - name: Adding http to Firewall
+       firewalld:
+         service: http
+         permanent: yes
+         state: enabled
+
+     - name: Reloading firewall
+       service:
+         name: firewalld
+         state: restarted
+         enabled: yes
