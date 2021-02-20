@@ -1,0 +1,26 @@
+---
+ - name: Testing Block 
+   hosts: master.example.com
+   become: yes
+   tasks: 
+     - name: Installing httpd
+       block: 
+         - name: Installing http 
+           yum:                                                           .................If this block not runs then run rescue
+             name: http
+             state: latest
+
+       rescue:
+         - name: Installing httpd
+           yum:
+             name: httpd
+             state: latest
+
+     - name: Creating index.html in /var/www/html/
+       copy: content="Hello santoooooooooooosh" dest=/var/www/html/index.html
+
+     - name: Restart httpd
+       service:
+         name: httpd
+         state: restarted
+         enabled: yes

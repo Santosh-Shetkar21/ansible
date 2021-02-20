@@ -1,0 +1,32 @@
+---
+ - name: Testing Block 
+   hosts: master.example.com
+   become: yes
+   tasks: 
+     - name: Installing httpd
+       block: 
+         - name: Installing http 
+           yum:
+             name: http
+             state: latest
+
+         - name: Restart httpd
+           service:
+             name: http
+             state: restarted
+             enabled: yes
+
+       rescue:
+         - name: Installing httpd
+           yum:
+             name: httpd
+             state: latest
+
+         - name: Restart httpd
+           service:
+             name: httpd
+             state: restarted
+             enabled: yes
+
+     - name: Creating index.html in /var/www/html/
+       copy: content="Hello santoooooooooooosh" dest=/var/www/html/index.html
