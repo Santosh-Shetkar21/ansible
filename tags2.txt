@@ -1,0 +1,49 @@
+---
+ - name: Play1
+   hosts: myserver
+   tags: run1
+   tasks:
+     - name: Task1
+       debug:
+         msg: "I am in Task1"
+       tags:
+         - task1
+
+     - name: Task2
+       debug:
+         msg: "I am in Task2"
+       tags:
+         - task2
+
+     - name: Task3
+       debug:
+         msg: "I am in Task3"
+       tags:
+         - task1
+
+     - name: Task4
+       debug:
+         msg: "I am in Task4"
+       tags:
+         - task1
+         - task4
+
+     - name: Task5
+       debug:
+         msg: "I am in Task5"
+
+ - name: Play2
+   hosts: myserver
+   tags: run2
+   tasks:
+     - name: Play1
+       debug:
+         msg: "I am in Play1"
+       tags:
+         - play1
+
+     - name: Play2
+       debug:
+         msg: "I am in Play2"
+       tags:
+         - play2

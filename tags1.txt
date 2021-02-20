@@ -1,0 +1,37 @@
+---
+ - name: Play1
+   hosts: myserver
+   tasks:
+     - name: Task1
+       debug:
+         msg: "I am in Task1"
+       tags:
+         - task1
+
+     - name: Task2
+       debug:
+         msg: "I am in Task2"
+       tags:
+         - task2
+
+     - name: Task3
+       debug:
+         msg: "I am in Task3"
+       tags:
+         - task1
+
+     - name: Task4
+       debug:
+         msg: "I am in Task4"
+       tags:
+         - task1
+         - task4
+
+     - name: Task5
+       debug:
+         msg: "I am in Task5"
+
+------------------------------------------
+ansible-playbook --skip-tags=task1 [playbook name]     .....To skip this task1
+
+ansible-playbook --list-tags=task1 [playbook name]     .....To see all tags
