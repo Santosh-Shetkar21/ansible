@@ -1,0 +1,26 @@
+---
+ - name: Testing When
+   hosts: master.example.com
+   vars:
+     var1: True
+     var2: false
+   tasks: 
+     - name: Checking var task1
+       debug:
+         msg: "hello Everyone 1"
+       when: var1
+
+     - name: Checking var task2
+       debug:
+         msg: "hello Everyone 2"
+       when: var2
+
+     - name: Checking vars task3
+       debug:
+         msg: "hello Everyone"
+       when: var1 and var2
+
+     - name: Checking vars task4
+       debug:
+         msg: "hello Everyone"
+       when: var1 or var2

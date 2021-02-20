@@ -1,0 +1,30 @@
+---
+ - name: Testing When 
+   hosts: master.example.com
+   become: Yes
+   tasks:
+     - name: Installing httpd
+       yum:
+         name: httpd
+         state: installed
+       when: ansible_distribution == "CentOS"
+
+     - name: Debugging 
+       debug:
+         msg: "Hello Everyone I am Ubuntu"
+       when: ansible_distribution == "Ubuntu"
+
+     - name: Debugging
+       debug:
+         msg: "Hello Everyone I am CentOS Major Version 8"
+       when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "8"
+
+     - name: Debugging
+       debug:
+         msg: "Hello Everyone I am CentOS  version 8.2"
+       when: ansible_distribution == "CentOS" or ansible_distribution_verion == "8.2" 
+
+     - name: Debugging
+       debug:
+         msg: "Hello Everyone I am CentOS Major Version 8"
+       when: ansible_distribution == "CentOS" or  ansible_distribution == "Ubuntu"

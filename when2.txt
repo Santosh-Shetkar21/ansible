@@ -1,0 +1,27 @@
+---
+ - name: Testing when
+   hosts: master.example.com
+   vars:
+     var1: santya1
+     var2: santya2
+     var3: santya3
+   tasks:
+     - name: Checking Var1
+       debug:
+         msg: "Hello Everyone this is {{ var1 }}"
+       when: var1 == "santya1"
+       
+     - name: Checking Var2
+       debug:
+         msg: "Hello Everyone this is {{ var1 }} and {{ var2 }}"
+       when: var1 == "santya1" or var2 == "santya2"
+
+     - name: Checking Var3
+       debug:
+         msg: "Hello Everyone this is {{ var1 }}"
+       when: var1 == "santya1" and var2 == "santya2"
+
+     - name: Checking Var4
+       debug:
+         msg: "Hello Everyone this is {{ var1 }}"
+       when: var1 == "santya1" and var3 == "santya23"
