@@ -1,0 +1,13 @@
+---
+ - name: Testing with_items
+   hosts: master
+   become: yes
+   tasks:
+     - name: Adding users
+       user:
+         name: "{{ item }}"
+         state: present
+       with_items:
+         - userI
+         - userJ              #This is list form
+         - userK

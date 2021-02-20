@@ -1,0 +1,14 @@
+---
+ - name: Testing with_items
+   hosts: master
+   become: yes
+   tasks:
+     - name: Adding users
+       user:
+         name: "{{ item.user }}"
+         uid: "{{ item.uid }}"
+         state: present
+       loop:
+         - { user: userI, uid: 2027 }
+         - { user: userJ, uid: 2028 }
+         - { user: userK, uid: 2029 }

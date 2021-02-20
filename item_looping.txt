@@ -1,0 +1,20 @@
+---
+ - name: Testing When
+   hosts: master.example.com
+   tasks: 
+     - name: Checking vars
+       debug:
+         msg: "{{ item }}"
+       loop:
+         - "1"
+         - "2"
+         - "3"
+         - "4"
+         - "5"
+
+     - name: testing loop 1
+       debug:
+         msg: "{{ item }}" 
+       loop: [1,2,3,4,5,6,7,8,9,10]
+       when: item > 4
+
