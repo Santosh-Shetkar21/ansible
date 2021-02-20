@@ -1,0 +1,14 @@
+---
+ - name: Testing When 
+   hosts: master.example.com
+   become: Yes
+   ignore_errors: yes
+   tasks:
+     - name: Installing httpd
+       yum:
+         name: http
+         state: installed
+
+     - name: Debugging 
+       debug:
+         msg: "Hello Everyone I am Ubuntu"
