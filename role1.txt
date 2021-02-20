@@ -1,0 +1,59 @@
+1) vim main1.yml
+---
+ - name: Testing
+   hosts: master
+   become: yes
+   roles:
+     - name: example_of_installation
+
+2) Create a role in /etc/ansible/roles
+   
+   ansible-galaxy init example_of_installation
+   
+3) Go to example_of_installation directory
+  
+4) vim tasks/main.yml
+  
+   ---
+# tasks file for example_of_installation
+ - name: Installing {{ packages }} ...................
+   yum:
+     name: "{{ packages }}"
+     state: latest
+
+ - name: Creating file
+   copy:
+     content: "{{ content }}" 
+     dest: "{{ path }}"
+
+ - name: Starting Services
+   service:
+     name: "{{ packages }}"
+     state: restarted
+     enabled: yes
+
+ - name: Adding port number
+   firewalld:
+     port: "{{ port_list }}"
+     permanent: yes
+     state: "{{ port_access }}"
+     immediate: yes
+
+5) vim vars/main.yml 
+---
+# vars file for example_of_installation
+#httpd
+packages: httpd
+port_list: 80/tcp
+service_list: http
+port_access: enabled
+content: hello this is httpd
+path: /var/www/html/index.html
+
+
+-----------------------------------------------------------------------------------------------
+
+Go to main1.yml path
+And run main1.yml file
+
+ansible-playbook main1.yml

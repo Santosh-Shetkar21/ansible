@@ -1,0 +1,122 @@
+1) vim main2.yml
+---
+ - name: Testing
+   hosts: master
+   become: yes
+   roles:
+     - name: example_of_installation
+   vars_prompt:
+     - name: package_name
+       prompt: "Which package you want to install? (httpd/vsftpd)"
+       private: no
+
+
+2) Create a role in /etc/ansible/roles
+   
+   ansible-galaxy init example_of_installation_1
+   
+3) Go to example_of_installation_1 directory
+
+4) vim tasks/main.yml
+---
+# tasks file for example_of_installation
+
+  - name: Redirecting httpd yaml file
+    include: httpd.yml
+    when: package_name == "httpd"
+
+  - name: Redirecting vsftpd yaml file
+    include: vsftpd.yml
+    when: package_name == "vsftpd"
+
+  
+5) vim tasks/httpd.yml
+  
+---
+# tasks file for example_of_installation
+ - name: Installing {{ packages }} ...................
+   yum:
+     name: "{{ packages }}"
+     state: latest
+
+ - name: Creating file
+   copy:
+     content: "{{ content }}" 
+     dest: "{{ path }}"
+
+ - name: Starting Services
+   service:
+     name: "{{ packages }}"
+     state: restarted
+     enabled: yes
+
+ - name: Adding port number
+   firewalld:
+     port: "{{ port_list }}"
+     permanent: yes
+     state: "{{ port_access }}"
+     immediate: yes
+
+6) vim tasks/vsftpd.yml
+
+---
+# tasks file for example_of_installation
+ - name: Installing {{ packages_vsftpd }}...................
+   yum:
+     name: "{{ packages_vsftpd }}"
+     state: latest
+
+ - name: Creating file
+   copy:
+     content: "{{ content_vsftpd }}" 
+     dest: "{{ path_vsftpd }}"
+
+ - name: Allow Anonymous
+   lineinfile:
+     path: "{{ anonymous_path_vsftpd }}"
+     regexp: "{{ regexp_vsftpd }}"
+     line: "{{ line_vsftpd }}"
+
+ - name: Starting Services
+   service:
+     name: "{{ packages_vsftpd }}"
+     state: restarted
+     enabled: yes
+
+ - name: Adding port number
+   firewalld:
+     service: "{{ service_list_vsftpd }}"
+     permanent: yes
+     state: "{{ port_access_vsftpd }}"
+     immediate: yes
+
+
+7) vim vars/main.yml 
+---
+# vars file for example_of_installation
+#httpd
+packages: httpd
+port_list: 80/tcp
+service_list: http
+port_access: enabled
+content: hello this is httpd
+path: /var/www/html/index.html
+
+#vsftpd
+packages_vsftpd: vsftpd
+port_list_vsftpd: 21/tcp
+service_list_vsftpd: vsftpd
+port_access_vsftpd: enabled
+content_vsftpd: hello this is vsftpd
+path_vsftpd: /var/ftp/pub/index.html
+#lineinfile
+anonymous_path_vsftpd: /etc/vsftpd/vsftpd.conf
+regexp_vsftpd: ^anonymous_enable=No
+line_vsftpd: anonymous_enable=Yes
+
+-----------------------------------------------------------------------------------------------
+
+Go to main2.yml path
+And run main2.yml file
+
+ansible-playbook main2.yml
