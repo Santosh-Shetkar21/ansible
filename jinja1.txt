@@ -1,0 +1,16 @@
+1) vim templateSample.j2 
+
+   I am {{ var1 }}, Welcome to linux server {{ ansible_hostname }}.
+
+2) vim  calltemplate.yml
+
+---
+ - name: Testing Jinja
+   hosts: master
+   become: yes
+   vars: 
+     - var1: santosh
+   tasks: 
+     - template: 
+         src: /home/santosh/jinja/templateSample.j2
+         dest: /sampleData

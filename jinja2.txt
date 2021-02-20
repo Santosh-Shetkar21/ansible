@@ -1,0 +1,16 @@
+1) vim myjinja.j2 
+This machine is {{ ansible_hostname }}
+amd its having {{ ansible_memtotal_mb }} memory
+today your ansible admin is {{ var1 }} you can contact him on {{ var1 }}@gmail.com
+
+2) vim cat callmyjinja.yml 
+---
+ - name: testing jinja with motd
+   hosts: master
+   vars: 
+     - var1: santosh
+   become: yes
+   tasks:
+     - template: 
+         src: /home/santosh/jinja/myjinja.j2
+         dest: /etc/motd
