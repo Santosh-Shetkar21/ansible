@@ -1,0 +1,83 @@
+Create var file 
+
+var_file.yml
+---
+ package1: httpd
+ package2: http
+ port: 80/tcp
+ service: http
+ content: Hello this is vars
+ service_state: restarted
+ firewall_state: enabled
+
+
+create another  yml file
+
+---
+ - name: Installing........................
+   hosts: master
+   become: yes
+   vars_files:
+     - /home/santosh/practice1/var_file.yml
+   tasks:
+     - name: Installing {{ package1 }}
+       yum:
+         name: "{{ package1 }}"
+         state: latest
+
+     - name: Creating index.html file
+       copy:
+         content: "{{ content }}"
+         dest: /var/www/html/index.html
+
+     - name: Restarting httpd services
+       service:
+         name: "{{ package1 }}"
+         state: "{{ service_state }}"
+
+     - name: Adding http service in firewalld
+       firewalld:
+         service: "{{ service }}"
+         permanent: yes
+         state: "{{ firewall_state }}"
+
+     - name: Reloading firewall services
+       service:
+         name: firewalld
+         state: "{{ service_state }}"
+
+
+------------------------------------------------Or-----------------------------------------------------
+tasks var
+
+---
+ - name: Installing........................
+   hosts: master
+   become: yes
+   tasks:
+     - /home/santosh/practice1/var_file.yml
+     - name: Installing {{ package1 }}
+       yum:
+         name: "{{ package1 }}"
+         state: latest
+
+     - name: Creating index.html file
+       copy:
+         content: "{{ content }}"
+         dest: /var/www/html/index.html
+
+     - name: Restarting httpd services
+       service:
+         name: "{{ package1 }}"
+         state: "{{ service_state }}"
+
+     - name: Adding http service in firewalld
+       firewalld:
+         service: "{{ service }}"
+         permanent: yes
+         state: "{{ firewall_state }}"
+
+     - name: Reloading firewall services
+       service:
+         name: firewalld
+         state: "{{ service_state }}"
