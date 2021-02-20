@@ -1,0 +1,21 @@
+---
+ - name: Partition
+   hosts: master.example.com
+   become: yes
+   tasks: 
+     - name: Creating 1GB partition
+       parted:
+         device: /dev/sdc
+         number: 1
+         state: absent
+         part_end: 1GiB
+
+     - name: File Format Disk
+       filesystem:
+         fstype: swap
+         dev: /dev/sdc1
+         force: yes
+
+     - name: Swapping On
+       command: 'swapoff -a'
+

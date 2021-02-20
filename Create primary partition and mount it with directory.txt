@@ -1,0 +1,30 @@
+---
+ - name: Partition
+   hosts: myserver
+   become: yes
+   tasks: 
+     - name: Creating 2GB partition
+       parted:
+         device: /dev/sdb
+         number: 1
+         state: present
+         part_start: 1MiB
+         part_end: 2GiB
+
+     - name: File Format Disk
+       filesystem:
+         fstype: ext4
+         dev: /dev/sdb1
+
+     - name: Creating Directory 
+       file:
+         path: /partition1
+         state: directory
+         mode: '0755'
+
+     - name: Mounting partition disk to directory
+       mount:
+         path: /partition1
+         src: /dev/sdb1
+         fstype: ext4
+         state: mounted

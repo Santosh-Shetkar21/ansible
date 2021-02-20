@@ -1,0 +1,12 @@
+---
+ - name: Extending lvm size
+   hosts: master.example.com
+   become: yes
+   tasks:
+     - name: Extend the logical volume to take of 70% the PVs and resize the underlying filesystem
+       lvol:
+         vg: vg1
+         lv: lv1
+         size: 70%PVS
+         resizefs: true
+

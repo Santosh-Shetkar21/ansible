@@ -1,0 +1,21 @@
+---
+ - name: Removing all
+   hosts: master.example.com
+   become: yes
+   tasks:
+     - name: Unmount a mounted volume
+       mount:
+         path: /lvmTesting
+         state: unmounted
+ 
+     - name: Remove the logical volume.
+       lvol:
+         vg: vg1
+         lv: lv1
+         state: absent
+         force: yes
+
+     - name: Remove a volume group
+       lvg:
+         vg: vg1
+         state: absent
